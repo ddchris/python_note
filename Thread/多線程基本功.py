@@ -4,7 +4,12 @@
 Threading:
 在一個角本中,使 python 同一時間內運行多個線程, 有效節省運算時間
 '''
-'多線程本身沒有返回值, 所以一定要把運算出的結果放入 Queue 中. 等所有線程結束後再自主線程取出接著運算  对于资源，加锁是个重要的环节。因为python原生的list,dict等，都是not thread safe的。而Queue，是线程安全的，因此在满足使用条件下，建议使用队列。'
+'''
+多線程本身沒有 return 值, 所以一定要把運算出的結果放入 Queue 中. 
+等所有線程結束後再自主線程取出接著運算,對於資源,加鎖是個重要的環節。
+因為 python 原生的 list,dict 等，都是 not thread safe 的。而 Queue，
+是 thread safe 的，因此在滿足使用條件下，建議使用儲列。
+'''
 from queue import Queue
 
 import time

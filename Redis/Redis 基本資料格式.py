@@ -70,17 +70,19 @@ conn.lset('numbers',0,7)
 conn.lrange('numbers',0,-1)
 
 # 利用 rpush(串列名稱,插入值) 在尾端插入
-conn.rpush('zoo','turtose')
+conn.rpush('zoo','turtoise')
 conn.lrange('zoo',0,-1)
 
 # 利用 lindex(位移值) 取得某位置的值
 conn.lindex('zoo',1)
 
+# 利用 llen(串列名稱) 取得串列長度
+conn.llen('zoo')
 
 
 # _______字典________
 
-# 利用 hmset(字典名稱,{鍵1:值1,鍵2:值2...}) 設定字典
+# 利用 hmset(字典名稱,{鍵1:值1, 鍵2:值2...}) 設定字典
 # 利用 hmget(字典名稱,鍵1,鍵2...}) 取得多個欄位值串列
 conn.hmset('song',{'do':'a deer','re':'about dog'}) 
 conn.hmget('song','do','re') 
@@ -102,7 +104,58 @@ conn.hget('song','aaa')
 # 利用 hlen(字典名稱) 取得字典長度
 conn.hlen('song')
 
-# 利用 hlen(字典名稱) 取得字典長度
+
+# _______集合________
+
+# 利用 sadd(集合名稱,值1,值2) 建立集合並設定一或多個值
+conn.sadd('room','duck','goat','turkey')
+conn.sadd('better_room','duck','tiger','wolf')
+
+# 利用 smembers(集合名稱) 取得集合所有值
+conn.smembers('room')
+
+# 利用 scard(集合名稱) 取得集合長度
+conn.scard('room')
+
+# 利用 srem(集合名稱,值1,值2,...) 刪除集合一個或多個值
+conn.srem('room', 'goat','turkey')
+
+# 利用 sinter(集合名稱1,集合名稱2) 取得集合交集
+# 利用 sinter(集合名稱3,集合名稱1,集合名稱2) 取得1,2集合交集並存入新集合3
+conn.sinter('room','better_room')
+conn.sinterstore('fowl_room','room','better_room')
+conn.smembers('fowl_room')
+
+# 利用 sunion(集合名稱1,集合名稱2) 取得集合聯集
+# 利用 sunionstore(集合名稱3,集合名稱1,集合名稱2) 取得集合聯集並存入新集合3
+conn.sunion('room','better_room')
+conn.sunionstore('fabulous_room','room','better_room')
+conn.smembers('fabulous_room')
+
+# 利用 sdiff(集合名稱1,集合名稱2) 取得集合1-集合2
+# 利用 sunionstore(集合名稱3,集合名稱1,集合名稱2) 取得集合聯集並存入新集合3
+conn.sdiff('better_room','room')
+conn.sdiffstore('sale_room','better_room','room')
 
 
+# _______有序集合(zset)________
+import time
+now = time.time()
+now
+
+# 利用 zadd(集合名稱, '值', score) 建立集合或新增一個值
+conn.zadd('logins','Adam', now)
+conn.zadd('logins','Alice', now + (5*60))
+conn.zadd('logins','Alex', now + (2*60*60))
+conn.zadd('logins','Brown', now + (24*60*60))
+
+# 利用 zrank(有序集合名稱,值) 取得值的順位
+conn.zrank('logins','Alex')
+
+# 利用 zscore(有序集合名稱,值) 取得值的 score
+conn.zscore('logins','Alex')
+
+# 利用 zrange(有序集合名稱,start,end) 檢查一定範圍的值
+conn.zrange('logins', 0, -1)
+conn.zrange('logins', 0, -1, withscores=True)
 
